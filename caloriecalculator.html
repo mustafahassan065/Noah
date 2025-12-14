@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Calculator - Noah's Aesthetics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#0A0A0A',
+                        'secondary': '#1A1A1A', 
+                        'accent': '#FF4444',
+                        'light': '#F5F5F5',
+                        'gray-text': '#8A8A8A'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #FF4444, #FF6666);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .glass-card {
+            backdrop-filter: blur(20px);
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #333;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #FF4444;
+            cursor: pointer;
+        }
+        .progress-bar {
+            height: 10px;
+            border-radius: 5px;
+            background: #333;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FF4444, #FF6666);
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body class="bg-primary text-white overflow-x-hidden">
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-card">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="text-xl sm:text-2xl font-bold">
+                    <a href="index.html" class="flex items-center">
+                        <span class="text-white">NOAH'S</span>
+                        <span class="gradient-text"> AESTHETICS</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-6 lg:space-x-8">
+                    <a href="index.html" class="text-white hover:text-accent transition-colors font-medium text-sm lg:text-base">Home</a>
+                    <a href="index.html#about" class="text-white hover:text-accent transition-colors font-medium text-sm lg:text-base">About</a>
+                    <a href="index.html#services" class="text-white hover:text-accent transition-colors font-medium text-sm lg:text-base">Services</a>
+                    <a href="index.html#programs" class="text-white hover:text-accent transition-colors font-medium text-sm lg:text-base">Programs</a>
+                    <a href="index.html#testimonials" class="text-white hover:text-accent transition-colors font-medium text-sm lg:text-base">Testimonials</a>
+                    <a href="gallery.html" class="text-white hover:text-accent transition-colors font-medium text-sm lg:text-base">Gallery</a>
+                    <a href="caloriecalculator.html" class="text-accent font-medium text-sm lg:text-base">Calorie Calculator</a>
+                    <a href="index.html#contact" class="text-white hover:text-accent transition-colors font-medium text-sm lg:text-base">Contact</a>
+                </div>
+                <button class="md:hidden text-white" id="mobile-menu-btn">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Calculator Hero -->
+    <section class="min-h-[50vh] sm:min-h-[60vh] flex items-center justify-center relative overflow-hidden pt-16">
+        <div class="absolute inset-0 bg-gradient-to-br from-black/80 via-black/60 to-black/80 z-10"></div>
+        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" 
+             alt="Nutrition and calorie counting" 
+             class="absolute inset-0 w-full h-full object-cover">
+        
+        <div class="relative z-20 text-center max-w-5xl mx-auto px-4 sm:px-6">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-4 sm:mb-6">
+                <span class="text-white">CALORIE</span><br>
+                <span class="gradient-text">CALCULATOR</span>
+            </h1>
+            <p class="text-base sm:text-lg md:text-xl text-gray-text mb-8 sm:mb-12 font-light max-w-3xl mx-auto px-2">
+                Calculate your daily calorie needs for muscle gain, fat loss, or maintenance
+            </p>
+        </div>
+    </section>
+
+    <!-- Calculator Content -->
+    <section class="py-12 sm:py-16 bg-gradient-to-b from-primary to-secondary">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:grid lg:grid-cols-2 gap-6 sm:gap-8">
+                <!-- Calculator Form -->
+                <div class="glass-card p-6 sm:p-8 rounded-2xl lg:rounded-3xl">
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-white">Calculate Your Calories</h2>
+                    
+                    <form id="calorieForm" class="space-y-4 sm:space-y-6">
+                        <!-- Personal Details -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                            <div>
+                                <label class="block text-gray-text mb-1 sm:mb-2 text-sm sm:text-base">Gender</label>
+                                <div class="flex space-x-3 sm:space-x-4">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="gender" value="male" class="mr-2" checked>
+                                        <span class="text-gray-text text-sm sm:text-base">Male</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="radio" name="gender" value="female" class="mr-2">
+                                        <span class="text-gray-text text-sm sm:text-base">Female</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-gray-text mb-1 sm:mb-2 text-sm sm:text-base">Age</label>
+                                <input type="number" id="age" min="15" max="80" value="30" class="w-full bg-secondary border border-gray-700 rounded-lg px-3 sm:px-4 py-2 sm:py-3 text-white text-sm sm:text-base focus:outline-none focus:border-accent" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Height and Weight -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                            <div>
+                                <label class="block text-gray-text mb-1 sm:mb-2 text-sm sm:text-base">Height (cm)</label>
+                                <input type="number" id="height" min="100" max="250" value="175" class="w-full bg-secondary border border-gray-700 rounded-lg px-3 sm:px-4 py-2 sm:py-3 text-white text-sm sm:text-base focus:outline-none focus:border-accent" required>
+                            </div>
+                            <div>
+                                <label class="block text-gray-text mb-1 sm:mb-2 text-sm sm:text-base">Weight (kg)</label>
+                                <input type="number" id="weight" min="40" max="200" value="75" class="w-full bg-secondary border border-gray-700 rounded-lg px-3 sm:px-4 py-2 sm:py-3 text-white text-sm sm:text-base focus:outline-none focus:border-accent" required>
+                            </div>
+                        </div>
+                        
+                        <!-- Activity Level -->
+                        <div>
+                            <label class="block text-gray-text mb-1 sm:mb-2 text-sm sm:text-base">Activity Level</label>
+                            <select id="activity" class="w-full bg-secondary border border-gray-700 rounded-lg px-3 sm:px-4 py-2 sm:py-3 text-white text-sm sm:text-base focus:outline-none focus:border-accent">
+                                <option value="1.2">Sedentary (little or no exercise)</option>
+                                <option value="1.375" selected>Lightly Active (light exercise 1-3 days/week)</option>
+                                <option value="1.55">Moderately Active (moderate exercise 3-5 days/week)</option>
+                                <option value="1.725">Very Active (hard exercise 6-7 days/week)</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Goal -->
+                        <div>
+                            <label class="block text-gray-text mb-1 sm:mb-2 text-sm sm:text-base">Your Goal</label>
+                            <select id="goal" class="w-full bg-secondary border border-gray-700 rounded-lg px-3 sm:px-4 py-2 sm:py-3 text-white text-sm sm:text-base focus:outline-none focus:border-accent">
+                                <option value="0.85">Lose Fat (15% calorie deficit)</option>
+                                <option value="1" selected>Maintain Weight</option>
+                                <option value="1.15">Gain Muscle (15% calorie surplus)</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Calculate Button -->
+                        <button type="submit" class="w-full bg-accent text-white font-semibold py-3 sm:py-4 rounded-full hover:bg-red-500 transition-colors text-sm sm:text-base lg:text-lg">
+                            Calculate Calories
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Results Panel -->
+                <div class="glass-card p-6 sm:p-8 rounded-2xl lg:rounded-3xl">
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-white">Your Results</h2>
+                    
+                    <div id="results" class="space-y-4 sm:space-y-6">
+                        <!-- Default state -->
+                        <div class="text-center py-8 sm:py-12">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                                <i class="fas fa-calculator text-accent text-2xl sm:text-3xl"></i>
+                            </div>
+                            <h3 class="text-lg sm:text-xl font-bold text-white mb-2">Enter Your Details</h3>
+                            <p class="text-gray-text text-sm sm:text-base">Fill out the form and click "Calculate" to see your results</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-primary border-t border-gray-800 text-white py-8 sm:py-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+                <!-- Brand Info -->
+                <div class="sm:col-span-2 lg:col-span-1">
+                    <div class="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
+                        <span class="text-white">NOAH'S</span>
+                        <span class="gradient-text"> AESTHETICS</span>
+                    </div>
+                    <p class="text-gray-text mb-4 sm:mb-6 text-sm sm:text-base">Science-based fitness coaching for muscle building and fat loss transformations.</p>
+                    <div class="flex space-x-3 sm:space-x-4">
+                        <a href="https://www.facebook.com/share/1ME189Q5MZ/?mibextid=wwXIfr&direct_share_include_copy=1&fb_entity_type=unknown" 
+                           target="_blank"
+                           class="text-gray-text hover:text-accent transition-colors">
+                            <i class="fab fa-facebook-f text-lg sm:text-xl"></i>
+                        </a>
+                        <a href="https://www.instagram.com/noahs_aesthetics_/" 
+                           target="_blank"
+                           class="text-gray-text hover:text-accent transition-colors">
+                            <i class="fab fa-instagram text-lg sm:text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-text hover:text-accent transition-colors">
+                            <i class="fab fa-twitter text-lg sm:text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-text hover:text-accent transition-colors">
+                            <i class="fab fa-youtube text-lg sm:text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-base sm:text-lg font-bold mb-3 sm:mb-4 text-white">Quick Links</h4>
+                    <ul class="space-y-2 sm:space-y-3">
+                        <li><a href="index.html" class="text-gray-text hover:text-accent transition-colors text-sm sm:text-base">Home</a></li>
+                        <li><a href="index.html#about" class="text-gray-text hover:text-accent transition-colors text-sm sm:text-base">About</a></li>
+                        <li><a href="index.html#services" class="text-gray-text hover:text-accent transition-colors text-sm sm:text-base">Services</a></li>
+                        <li><a href="index.html#programs" class="text-gray-text hover:text-accent transition-colors text-sm sm:text-base">Programs</a></li>
+                    </ul>
+                </div>
+
+                <!-- More Links -->
+                <div>
+                    <h4 class="text-base sm:text-lg font-bold mb-3 sm:mb-4 text-white">More</h4>
+                    <ul class="space-y-2 sm:space-y-3">
+                        <li><a href="index.html#testimonials" class="text-gray-text hover:text-accent transition-colors text-sm sm:text-base">Testimonials</a></li>
+                        <li><a href="gallery.html" class="text-gray-text hover:text-accent transition-colors text-sm sm:text-base">Gallery</a></li>
+                        <li><a href="caloriecalculator.html" class="text-gray-text hover:text-accent transition-colors text-sm sm:text-base">Calorie Calculator</a></li>
+                        <li><a href="index.html#contact" class="text-gray-text hover:text-accent transition-colors text-sm sm:text-base">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="text-base sm:text-lg font-bold mb-3 sm:mb-4 text-white">Stay Updated</h4>
+                    <p class="text-gray-text mb-3 sm:mb-4 text-sm sm:text-base">Get fitness tips and exclusive offers</p>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-6 sm:mt-8 pt-6 sm:pt-8 text-center">
+                <p class="text-gray-text mb-1 sm:mb-2 text-sm">© 2025 Noah's Aesthetics. All rights reserved.</p>
+                <p class="text-gray-text text-xs sm:text-sm">Build Muscle. Lose Fat. Transform.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.createElement('div');
+        mobileMenu.className = 'md:hidden fixed top-0 left-0 w-full h-full bg-primary z-40 transform -translate-x-full transition-transform duration-300';
+        mobileMenu.innerHTML = `
+            <div class="p-4 sm:p-6">
+                <div class="flex justify-between items-center mb-6 sm:mb-8">
+                    <div class="text-xl sm:text-2xl font-bold">
+                        <span class="text-white">NOAH'S</span>
+                        <span class="gradient-text"> AESTHETICS</span>
+                    </div>
+                    <button id="close-menu" class="text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="space-y-4 sm:space-y-6">
+                    <a href="index.html" class="block text-xl sm:text-2xl text-white hover:text-accent">Home</a>
+                    <a href="index.html#about" class="block text-xl sm:text-2xl text-white hover:text-accent">About</a>
+                    <a href="index.html#services" class="block text-xl sm:text-2xl text-white hover:text-accent">Services</a>
+                    <a href="index.html#programs" class="block text-xl sm:text-2xl text-white hover:text-accent">Programs</a>
+                    <a href="index.html#testimonials" class="block text-xl sm:text-2xl text-white hover:text-accent">Testimonials</a>
+                    <a href="gallery.html" class="block text-xl sm:text-2xl text-white hover:text-accent">Gallery</a>
+                    <a href="caloriecalculator.html" class="block text-xl sm:text-2xl text-accent">Calorie Calculator</a>
+                    <a href="index.html#contact" class="block text-xl sm:text-2xl text-white hover:text-accent">Contact</a>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(mobileMenu);
+
+        mobileMenuBtn?.addEventListener('click', () => {
+            mobileMenu.classList.remove('-translate-x-full');
+        });
+
+        document.getElementById('close-menu')?.addEventListener('click', () => {
+            mobileMenu.classList.add('-translate-x-full');
+        });
+
+        // Close mobile menu when clicking on links
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('-translate-x-full');
+            });
+        });
+
+        // Calculate calories
+        document.getElementById('calorieForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const age = parseInt(document.getElementById('age').value);
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const height = parseInt(document.getElementById('height').value);
+            const weight = parseInt(document.getElementById('weight').value);
+            const activity = parseFloat(document.getElementById('activity').value);
+            const goal = parseFloat(document.getElementById('goal').value);
+            
+            // Calculate BMR using Mifflin-St Jeor Equation
+            let bmr;
+            if (gender === 'male') {
+                bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+            } else {
+                bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+            }
+            
+            // Calculate TDEE (Total Daily Energy Expenditure)
+            let tdee = bmr * activity;
+            
+            // Adjust for goal
+            let targetCalories = Math.round(tdee * goal);
+            
+            // Get goal text
+            let goalText;
+            if (goal < 1) goalText = 'Fat Loss';
+            else if (goal > 1) goalText = 'Muscle Gain';
+            else goalText = 'Maintenance';
+            
+            // Calculate macronutrients
+            const proteinGrams = Math.round(weight * 1.8);
+            const proteinCalories = proteinGrams * 4;
+            
+            const fatGrams = Math.round(weight * 1.0);
+            const fatCalories = fatGrams * 9;
+            
+            const remainingCalories = targetCalories - proteinCalories - fatCalories;
+            const carbGrams = Math.round(remainingCalories / 4);
+            
+            // Update results display
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <div class="text-center mb-6 sm:mb-8">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                        <i class="fas fa-fire text-accent text-2xl sm:text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl sm:text-2xl font-bold text-white mb-2">${targetCalories} Calories</h3>
+                    <p class="text-gray-text text-sm sm:text-base">Daily target for ${goalText}</p>
+                </div>
+                
+                <div class="space-y-4 sm:space-y-6">
+                    <div class="glass-card p-4 sm:p-6 rounded-xl sm:rounded-2xl">
+                        <div class="flex justify-between items-center mb-3 sm:mb-4">
+                            <div>
+                                <h4 class="text-lg sm:text-xl font-bold text-white">Daily Calories</h4>
+                                <p class="text-gray-text text-xs sm:text-sm">${goalText} target</p>
+                            </div>
+                            <div class="text-xl sm:text-2xl font-bold gradient-text">${targetCalories}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card p-4 sm:p-6 rounded-xl sm:rounded-2xl">
+                        <h4 class="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">Macronutrients</h4>
+                        <div class="space-y-3 sm:space-y-4">
+                            <div>
+                                <div class="flex justify-between mb-1 sm:mb-2">
+                                    <span class="text-gray-text text-sm sm:text-base">Protein</span>
+                                    <span class="text-white font-bold text-sm sm:text-base">${proteinGrams}g</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${(proteinCalories/targetCalories*100)}%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1 sm:mb-2">
+                                    <span class="text-gray-text text-sm sm:text-base">Carbohydrates</span>
+                                    <span class="text-white font-bold text-sm sm:text-base">${carbGrams}g</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${(remainingCalories/targetCalories*100)}%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1 sm:mb-2">
+                                    <span class="text-gray-text text-sm sm:text-base">Fats</span>
+                                    <span class="text-white font-bold text-sm sm:text-base">${fatGrams}g</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${(fatCalories/targetCalories*100)}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 sm:mt-8 text-center">
+                    <p class="text-gray-text text-xs sm:text-sm">For personalized nutrition planning, <a href="index.html#contact" class="text-accent hover:text-red-500">contact Noah</a></p>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>
